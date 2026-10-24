@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 downloades/
 chroma_db/
+
+vector_db/

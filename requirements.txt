@@ -20,6 +20,7 @@ langchain-core>=0.2.0
 langchain-community>=0.2.0
 langchain-google-genai
 google-genai
+langchain-groq
 
 # ── RAG Pipeline ──────────────────────────────────────────────────────────────
 chromadb>=0.5.0                   # Local vector store

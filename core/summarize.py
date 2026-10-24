@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -9,17 +9,32 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 load_dotenv()
 
 
+
 def get_llm():
-    api_key = os.getenv("GEMINI_API_KEY")
+    import streamlit as st
+
+    api_key = None
+
+    try:
+        api_key = st.secrets.get("GROQ_API_KEY")
+    except Exception:
+        pass
+
+    api_key = api_key or os.getenv("GROQ_API_KEY")
 
     if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is missing from .env")
+        raise RuntimeError(
+            "GROQ_API_KEY is missing. Check your local .env file "
+            "or Streamlit Cloud Secrets."
+        )
 
-    return ChatGoogleGenerativeAI(
-        model="gemini-3.8-flash",
-        google_api_key=api_key,
-        temperature=0.3
-    )
+    return ChatGroq(
+    model="openai/gpt-oss-20b",
+    api_key=api_key,
+    temperature=0.2,
+    max_retries=3,
+    timeout=60,
+)
 
 
 def split_transcript(transcript: str) -> list:
